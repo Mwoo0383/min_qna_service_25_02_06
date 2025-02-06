@@ -1,4 +1,28 @@
 spring:
+  profiles:
+    active: dev
   output:
     ansi:
-      enable: always
+      enabled: always
+  thymeleaf:
+    cache: false  # 타임리프 캐시끄기
+    prefix: classpath:/templates/ # 타임리프 캐시 끄기 (이 설정을 해야 꺼점)
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/board
+    username: root
+    password: AZsx!@#$1739
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    jpa:
+      hibernate:
+        ddl-auto: create
+      properties:
+        hibernate:
+          show_sql: true
+          format_sql: true
+          use_sql_comments: true
