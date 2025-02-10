@@ -27,6 +27,7 @@ public class Question {
 
     private LocalDateTime createDate;
 
+    // CascadeType.REMOVE : 질문이 삭제되면 답변도 같이 삭제된다.
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
 }
