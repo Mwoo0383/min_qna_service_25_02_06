@@ -2,6 +2,7 @@ package com.minu.qna_service;
 
 import com.minu.qna_service.boundedContext.question.Question;
 import com.minu.qna_service.boundedContext.repository.QuestionRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,14 @@ class QnaServiceApplicationTests {
     @Autowired
     private QuestionRepository questionRepository;
 
-    @Test
-    @DisplayName("데이터 저장하기")
-    void t001() {
+    @BeforeEach // 테스트 케이스 실행전 딱 한번 실행
+    void beforeEach() {
+        // 모든 데이터 삭제
+        questionRepository.deleteAll();
+
+        // 흔적 삭제(다음번 INSERT 때 id가 1번으로 설정되도록)
+        questionRepository.clearAutoIncrement();
+
         Question q1 = new Question();
         q1.setSubject("sbb가 무엇인가요?");
         q1.setContent("sbb에 대해서 알고 싶습니다.");
@@ -34,6 +40,18 @@ class QnaServiceApplicationTests {
         q2.setContent("id는 자동으로 생성되나요?");
         q2.setCreateDate(LocalDateTime.now());
         questionRepository.save(q2);
+    }
+
+    @Test
+    @DisplayName("데이터 저장하기")
+    void t001() {
+        Question q = new Question();
+        q.setSubject("겨울 제철 음식으로는 무엇을 먹어야 하나요?");
+        q.setContent("겨울 제철 음식을 알려주세요.");
+        q.setCreateDate(LocalDateTime.now());
+        questionRepository.save(q);
+
+        assertEquals("겨울 제철 음식으로는 무엇을 먹어야 하나요?", questionRepository.findById(3).get().getSubject());
     }
 
     @Test
